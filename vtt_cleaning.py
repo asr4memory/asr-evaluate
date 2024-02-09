@@ -36,7 +36,6 @@ def clean_vtt_content(content, remove_punctuation=False):
 
     return result
 
-
 def run_on_directory():
     "Run through all VTT files in the specified directory."
     input_path = Path(vtt_directory)
@@ -48,19 +47,16 @@ def run_on_directory():
 
         # Write cleaned up output file (first version).
         cleaned_text1 = clean_vtt_content(vtt_content)
-        new_filepath1 = (output_path.with_stem(f"{orig_stem}_cleared")
-                         .with_suffix(".txt"))
+        new_filepath1 = output_path / f"{orig_stem}.cleared.txt"
         new_filepath1.write_text(cleaned_text1, encoding="utf-8")
         print(f"Cleaned text was saved in: {new_filepath1}")
 
         # Write second version without punctuation.
         cleaned_text2 = clean_vtt_content(vtt_content,
                                           remove_punctuation=True)
-        new_filepath2 = (output_path.with_stem(f"{orig_stem}_cleared_no_punct")
-                         .with_suffix(".txt"))
+        new_filepath2 = output_path / f"{orig_stem}.cleared_no_punctuation.txt"
         new_filepath2.write_text(cleaned_text2, encoding="utf-8")
         print(f"Text without punctuation was saved in: {new_filepath2}")
-
 
 if __name__ == '__main__':
     run_on_directory()
