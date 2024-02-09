@@ -1,10 +1,10 @@
 import os
-from jiwer import process_words, process_characters
-import jiwer
+import sys
+from jiwer import process_words, process_characters, visualize_alignment
 from config_asr_evaluate import reference_directory, hypothesis_directory
 
-# Function to get the base name of the files up to the first point:
 def list_files(directory):
+    "Function to get the base name of the files up to the first point."
     files = {}
     for filename in os.listdir(directory):
         # Split the file name at the first point.
@@ -12,18 +12,23 @@ def list_files(directory):
         files[base_name] = filename
     return files
 
-# List files in both directories:
-reference_files = list_files(reference_directory)
-hypothesis_files = list_files(hypothesis_directory)
 
-# Iterate through the reference files and check for matches in the
-# hypothesis files:
-for ref_base, ref_filename in reference_files.items():
-    if ref_base in hypothesis_files:
+def run_on_directories(print_alignment=False):
+    # List files in both directories:
+    reference_files = list_files(reference_directory)
+    hypothesis_files = list_files(hypothesis_directory)
+
+    # Iterate through the reference files and check for matches in the
+    # hypothesis files:
+    for ref_base, ref_filename in reference_files.items():
+        if ref_base not in hypothesis_files:
+            print(f"No corresponding hypothesis file found for: {ref_base}")
+            continue
+
         # Construct complete path to the files:
         ref_file_path = os.path.join(reference_directory, ref_filename)
         hyp_file_path = os.path.join(hypothesis_directory,
-                                     hypothesis_files[ref_base])
+                                    hypothesis_files[ref_base])
 
         # Read texts from the files:
         with open(ref_file_path, 'r', encoding='utf-8') as ref:
@@ -43,6 +48,12 @@ for ref_base, ref_filename in reference_files.items():
 
         # Optional: Output alignments and visual representation of the
         # alignment:
-        print(jiwer.visualize_alignment(char_output))
+        if print_alignment:
+            print(visualize_alignment(char_output))
+
+
+if __name__ == "__main__":
+    if sys.argv[-1] == '-a' or sys.argv[-1] == '--print-alignment':
+        run_on_directories(print_alignment=True)
     else:
-        print(f"No corresponding hypothesis file found for: {ref_base}")
+        run_on_directories()

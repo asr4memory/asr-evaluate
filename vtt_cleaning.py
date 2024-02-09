@@ -11,19 +11,19 @@ def clean_vtt_content(content, remove_punctuation=False):
     # Remove the VTT heading, segment numbers, time codes and notes and
     # comments in () and <>:
     result = re.sub(r'WEBVTT\n\n|\d+\n\d{2}:\d{2}:\d{2}\.\d{3} --> \d{2}:\d{2}:\d{2}\.\d{3}\n|\(.*?\)|<.*?>',
-                             '', content)
+                    '', content)
     # Corrected regular expression to remove the filler words "äh",
     # "ähs", "ähm", "hm", und "hmm" including the following comma,
     # semicolon, hyphen or period:
     result = re.sub(r'\b(äh|ähs|ähm|hm|hmm)\b\s*[,;:\-\.]?\s*', '',
-                             result, flags=re.IGNORECASE)
+                    result, flags=re.IGNORECASE)
     # Remove underlines:
     result = re.sub(r'_', '', result)
     # Removing quotation marks:
     result = re.sub(r'[\'"]', '', result)
     # Remove all forms of blank lines:
     result = re.sub(r'^\s*$\n', '', result,
-                             flags=re.MULTILINE)
+                    flags=re.MULTILINE)
 
     # Additional removal of all punctuation if requested:
     if remove_punctuation:
@@ -47,7 +47,7 @@ def run_on_directory():
         # Write cleaned up output file (first version).
         cleaned_text = clean_vtt_content(vtt_content)
         base_filename = os.path.basename(vtt_file_path)
-        output_file_name = base_filename.replace('.vtt', '.cleared.txt')
+        output_file_name = base_filename.replace('.vtt', '_cleared.txt')
         output_file_path = os.path.join(output_directory, output_file_name)
         with open(output_file_path, 'w', encoding='utf-8') as file:
             file.write(cleaned_text)
@@ -57,7 +57,7 @@ def run_on_directory():
         text_without_punctuation = clean_vtt_content(vtt_content,
                                                     remove_punctuation=True)
         output_file_name_no_punct = base_filename.replace('.vtt',
-                                                        '.cleared_no_punctuation.txt')
+                                                        '_cleared_no_punct.txt')
         output_file_path_no_punct = os.path.join(output_directory,
                                                 output_file_name_no_punct)
 
