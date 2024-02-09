@@ -7,7 +7,8 @@ from config_asr_evaluate import reference_directory, hypothesis_directory
 def list_files(directory):
     files = {}
     for filename in os.listdir(directory):
-        base_name = filename.split('.', 1)[0]  # Split the file name at the first point
+        # Split the file name at the first point.
+        base_name = filename.split('.', 1)[0]
         files[base_name] = filename
     return files
 
@@ -15,12 +16,14 @@ def list_files(directory):
 reference_files = list_files(reference_directory)
 hypothesis_files = list_files(hypothesis_directory)
 
-# Iterate through the reference files and check for matches in the hypothesis files:
+# Iterate through the reference files and check for matches in the
+# hypothesis files:
 for ref_base, ref_filename in reference_files.items():
     if ref_base in hypothesis_files:
         # Construct complete path to the files:
         ref_file_path = os.path.join(reference_directory, ref_filename)
-        hyp_file_path = os.path.join(hypothesis_directory, hypothesis_files[ref_base])
+        hyp_file_path = os.path.join(hypothesis_directory,
+                                     hypothesis_files[ref_base])
 
         # Read texts from the files:
         with open(ref_file_path, 'r', encoding='utf-8') as ref:
@@ -38,8 +41,8 @@ for ref_base, ref_filename in reference_files.items():
         print(f"WIL: {metrics.wil}")
         print(f"CER: {char_output.cer}")
 
-        # Optional: Output alignments and visual representation of the alignment:
-        #print(char_output.alignments)
+        # Optional: Output alignments and visual representation of the
+        # alignment:
         print(jiwer.visualize_alignment(char_output))
     else:
         print(f"No corresponding hypothesis file found for: {ref_base}")
