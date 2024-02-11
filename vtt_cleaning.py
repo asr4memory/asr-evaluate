@@ -1,6 +1,5 @@
-import glob
+from pathlib import Path
 import re
-import os
 import string
 
 from config_asr_evaluate import vtt_directory
@@ -37,36 +36,27 @@ def clean_vtt_content(content, remove_punctuation=False):
 
     return result
 
-
 def run_on_directory():
     "Run through all VTT files in the specified directory."
-    for vtt_file_path in glob.glob(os.path.join(vtt_directory, '*.vtt')):
-        with open(vtt_file_path, 'r', encoding='utf-8') as file:
-            vtt_content = file.read()
+    input_path = Path(vtt_directory)
+    output_path = Path(output_directory)
+
+    for filepath in input_path.glob("*.vtt"):
+        orig_stem = filepath.stem
+        vtt_content = filepath.read_text(encoding="utf-8")
 
         # Write cleaned up output file (first version).
-        cleaned_text = clean_vtt_content(vtt_content)
-        base_filename = os.path.basename(vtt_file_path)
-        output_file_name = base_filename.replace('.vtt', '_cleared.txt')
-        output_file_path = os.path.join(output_directory, output_file_name)
-        with open(output_file_path, 'w', encoding='utf-8') as file:
-            file.write(cleaned_text)
+        cleaned_text1 = clean_vtt_content(vtt_content)
+        new_filepath1 = output_path / f"{orig_stem}.cleared.txt"
+        new_filepath1.write_text(cleaned_text1, encoding="utf-8")
+        print(f"Cleaned text was saved in: {new_filepath1}")
 
-        # Write cleaned up output file (second version without
-        # punctuation).
-        text_without_punctuation = clean_vtt_content(vtt_content,
-                                                    remove_punctuation=True)
-        output_file_name_no_punct = base_filename.replace('.vtt',
-                                                        '_cleared_no_punct.txt')
-        output_file_path_no_punct = os.path.join(output_directory,
-                                                output_file_name_no_punct)
-
-        with open(output_file_path_no_punct, 'w', encoding='utf-8') as file:
-            file.write(text_without_punctuation)
-
-        print(f"Cleaned text was saved in: {output_file_path}")
-        print(f"Text without punctuation was saved in: {output_file_path_no_punct}")
-
+        # Write second version without punctuation.
+        cleaned_text2 = clean_vtt_content(vtt_content,
+                                          remove_punctuation=True)
+        new_filepath2 = output_path / f"{orig_stem}.cleared_no_punctuation.txt"
+        new_filepath2.write_text(cleaned_text2, encoding="utf-8")
+        print(f"Text without punctuation was saved in: {new_filepath2}")
 
 if __name__ == '__main__':
     run_on_directory()
