@@ -3,6 +3,8 @@ import statistics
 import torch
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
 from datasets import load_dataset, Audio
+#from tqdm.auto import tqdm
+#from transformers.pipelines.pt_utils import KeyDataset
 from jiwer import process_words
 
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
@@ -55,19 +57,29 @@ common_voice = common_voice.cast_column("audio", Audio(sampling_rate=16000))
 
 
 data_point_count = 20
+
+selected_common_voice = common_voice.select(range(data_point_count))
+
 wer_list = []
 
-print("Evaluating {0} of {1} data points...".format(data_point_count,
-                                                    len(common_voice)))
+print("Evaluating {0} data points...".format(len(selected_common_voice)))
 
-for index in range(data_point_count):
+# TODO: Use this later.
+#for out in pipe(KeyDataset(selected_common_voice, "audio"),
+#                     generate_kwargs={"language": "german"}):
+#    print(out["text"])
+
+
+for index in range(len(selected_common_voice)):
     actual, target, metrics = evaluate(common_voice[index])
-    print("{0} / {1} {2}".format(index + 1, data_point_count, '-' * 70))
+    print("{0} / {1} {2}".format(index + 1,
+                                 len(selected_common_voice),
+                                 '-' * 70))
     print(actual)
     print(target)
     wer_list.append(metrics.wer)
     print("WER: {:2.1%}".format(metrics.wer))
 
 mean = statistics.mean(wer_list)
-print("Average WER of {0:2.1%} for {1} data points".format(mean,
-                                                           data_point_count))
+print("Average WER of {0:2.1%} for {1} data points".format(
+    mean, len(selected_common_voice)))
