@@ -8,7 +8,17 @@
 
 ## Installation
 
-- Install dependencies with `pip install -r requirements_cpu.txt` or with `pip install -r requirements_gpu.txt` according to your system.
+Install dependencies with for usage with a CPU:
+
+```shell
+pip install -r requirements_cpu.txt
+```
+
+Or install dependencies for a GPU:
+
+```shell
+pip install -r requirements_gpu.txt
+```
 
 ## Usage
 
