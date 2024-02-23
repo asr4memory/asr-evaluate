@@ -39,7 +39,7 @@ def normalize(text):
 
 def evaluate(data_point):
     sample = data_point["audio"]
-    result = pipe(sample)
+    result = pipe(sample, generate_kwargs={"language": "german"})
     actual = normalize(result["text"])
     target = normalize(data_point["sentence"])
     metrics = process_words(target, actual)
