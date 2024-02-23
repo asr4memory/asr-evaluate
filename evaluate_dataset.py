@@ -2,10 +2,11 @@ import re
 import statistics
 import torch
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
-from datasets import load_dataset, Audio
 #from tqdm.auto import tqdm
 #from transformers.pipelines.pt_utils import KeyDataset
 from jiwer import process_words
+from testdata import CommonVoiceTestData, FleursTestData
+
 
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
 torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
@@ -39,30 +40,24 @@ def normalize(text):
     return result
 
 
+cv = CommonVoiceTestData(20)
+fleurs = FleursTestData(20)
+data = cv
+
+wer_list = []
+
+
 def evaluate(data_point):
-    sample = data_point["audio"]
-    result = pipe(sample, generate_kwargs={"language": "german"})
+    sample = data_point[data.AUDIO_KEY]
+    result = pipe(sample, generate_kwargs={"language": data.LANGUAGE})
     actual = normalize(result["text"])
-    target = normalize(data_point["sentence"])
+    target = normalize(data_point[data.TRANSCRIPTION_KEY])
     metrics = process_words(target, actual)
     return (actual, target, metrics)
 
 
-common_voice = load_dataset('mozilla-foundation/common_voice_16_1',
-                            'de',
-                            split='test',
-                            trust_remote_code=True)
-
-common_voice = common_voice.cast_column("audio", Audio(sampling_rate=16000))
-
-
-data_point_count = 20
-
-selected_common_voice = common_voice.select(range(data_point_count))
-
-wer_list = []
-
-print("Evaluating {0} data points...".format(len(selected_common_voice)))
+print(f"Dataset: {data}")
+print(f"Evaluating {len(data)} data points...")
 
 # TODO: Use this later.
 #for out in pipe(KeyDataset(selected_common_voice, "audio"),
@@ -70,10 +65,10 @@ print("Evaluating {0} data points...".format(len(selected_common_voice)))
 #    print(out["text"])
 
 
-for index in range(len(selected_common_voice)):
-    actual, target, metrics = evaluate(common_voice[index])
+for index in range(len(data)):
+    actual, target, metrics = evaluate(data[index])
     print("{0} / {1} {2}".format(index + 1,
-                                 len(selected_common_voice),
+                                 len(data),
                                  '-' * 70))
     print(actual)
     print(target)
@@ -82,4 +77,4 @@ for index in range(len(selected_common_voice)):
 
 mean = statistics.mean(wer_list)
 print("Average WER of {0:2.1%} for {1} data points".format(
-    mean, len(selected_common_voice)))
+    mean, len(data)))
