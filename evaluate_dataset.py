@@ -1,3 +1,4 @@
+import argparse
 import re
 import statistics
 import torch
@@ -40,41 +41,62 @@ def normalize(text):
     return result
 
 
-cv = CommonVoiceTestData(20)
-fleurs = FleursTestData(20)
-data = cv
-
-wer_list = []
-
-
-def evaluate(data_point):
-    sample = data_point[data.AUDIO_KEY]
-    result = pipe(sample, generate_kwargs={"language": data.LANGUAGE})
+def evaluate(data_point, dataset):
+    sample = data_point[dataset.AUDIO_KEY]
+    result = pipe(sample, generate_kwargs={"language": dataset.LANGUAGE})
     actual = normalize(result["text"])
-    target = normalize(data_point[data.TRANSCRIPTION_KEY])
+    target = normalize(data_point[dataset.TRANSCRIPTION_KEY])
     metrics = process_words(target, actual)
     return (actual, target, metrics)
 
 
-print(f"Dataset: {data}")
-print(f"Evaluating {len(data)} data points...")
+def process(dataset):
+    print(f"Dataset: {dataset}")
+    print(f"Evaluating {len(dataset)} data points...")
 
-# TODO: Use this later.
-#for out in pipe(KeyDataset(selected_common_voice, "audio"),
-#                     generate_kwargs={"language": "german"}):
-#    print(out["text"])
+    # TODO: Use this later.
+    #for out in pipe(KeyDataset(selected_common_voice, "audio"),
+    #                     generate_kwargs={"language": "german"}):
+    #    print(out["text"])
+
+    wer_list = []
+
+    for index in range(len(dataset)):
+        actual, target, metrics = evaluate(dataset[index], dataset)
+        print("{0} / {1} {2}".format(index + 1,
+                                    len(dataset),
+                                    '-' * 70))
+        print(actual)
+        print(target)
+        wer_list.append(metrics.wer)
+        print("WER: {:2.1%}".format(metrics.wer))
+
+    mean = statistics.mean(wer_list)
+    print("Average WER of {0:2.1%} for {1} data points".format(
+        mean, len(dataset)))
 
 
-for index in range(len(data)):
-    actual, target, metrics = evaluate(data[index])
-    print("{0} / {1} {2}".format(index + 1,
-                                 len(data),
-                                 '-' * 70))
-    print(actual)
-    print(target)
-    wer_list.append(metrics.wer)
-    print("WER: {:2.1%}".format(metrics.wer))
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(
+        prog="asr-evaluate",
+        description="Evaluate automatic speech recognition tools.")
 
-mean = statistics.mean(wer_list)
-print("Average WER of {0:2.1%} for {1} data points".format(
-    mean, len(data)))
+    parser.add_argument('dataset',
+                        choices=['cv', 'fleurs'],
+                        help='the name of the dataset the tool is evaluated on')
+    parser.add_argument('--length',
+                        type=int,
+                        default=None,
+                        help='the number of data points that should be used')
+
+    args = parser.parse_args()
+
+    if args.dataset == 'cv':
+        dataset_class = CommonVoiceTestData
+    elif args.dataset == 'fleurs':
+        dataset_class = FleursTestData
+
+    length = args.length
+
+    dataset = dataset_class(length)
+    process(dataset)

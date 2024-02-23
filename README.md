@@ -16,7 +16,14 @@ Right now, only Whisper can be used for evaluation.
 
 ### Evaluating datasets
 
-- Use evaluate_dataset.py to evaluate either the CommonVoice or the Fleurs dataset.
+- Use evaluate_dataset.py to evaluate either the Fleurs or the CommonVoice dataset.
+```bash
+python evaluate_dataset.py fleurs
+```
+- Use the length option to reduce the number of data points.
+```bash
+python evaluate_dataset.py cv length=100
+```
 
 ### Evaluating larger files and transcripts
 
