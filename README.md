@@ -34,16 +34,26 @@ Right now, only Whisper can be used for evaluation.
 
 Use evaluate_dataset.py to evaluate either the Fleurs or the CommonVoice dataset.
 
-```bash
+```shell
 python evaluate_dataset.py fleurs
 ```
 
 Use the length option to reduce the number of data points.
 
-```bash
+```shell
 python evaluate_dataset.py cv length=100
 ```
 
 ### Evaluating larger files and transcripts
 
-Work in progress, try out vtt_cleaning.py or wer_calculation.py
+Clean up (normalize) VTT files with vtt_cleaning.py.
+
+```shell
+python vtt_cleaning.py
+```
+
+Calculate WERs (word error rates) based on reference and hypothesis text files.
+
+```shell
+python wer_calculation.py
+```
