@@ -1,4 +1,5 @@
-from datasets import load_dataset, Audio
+from datasets import load_dataset, Audio, Dataset
+from pyarrow import Table
 
 class TestData:
     AUDIO_KEY = "audio"
@@ -6,7 +7,7 @@ class TestData:
     LANGUAGE = "german"
 
     def __init__(self, length = None):
-        pass
+        self.dataset = Dataset(Table())
 
     def __len__(self):
         return len(self.dataset)

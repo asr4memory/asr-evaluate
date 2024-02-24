@@ -20,21 +20,30 @@ Install the rest of the dependencies:
 pip install -r requirements.txt
 ```
 
+Create the configuration file.
+
+```shell
+cp config_example.py config_asr_evaluate.py
+```
+
 ## Usage
 
 Right now, only Whisper can be used for evaluation.
 
 ### Evaluating datasets
 
-- Use evaluate_dataset.py to evaluate either the Fleurs or the CommonVoice dataset.
+Use evaluate_dataset.py to evaluate either the Fleurs or the CommonVoice dataset.
+
 ```bash
 python evaluate_dataset.py fleurs
 ```
-- Use the length option to reduce the number of data points.
+
+Use the length option to reduce the number of data points.
+
 ```bash
 python evaluate_dataset.py cv length=100
 ```
 
 ### Evaluating larger files and transcripts
 
-- Work in progress, try out vtt_cleaning.py or wer_calculation.py
+Work in progress, try out vtt_cleaning.py or wer_calculation.py
