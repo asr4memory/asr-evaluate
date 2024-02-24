@@ -1,9 +1,7 @@
 from pathlib import Path
 import re
 import string
-
-from config_asr_evaluate import vtt_directory
-from config_asr_evaluate import output_directory
+from app_config import get_config
 
 def clean_vtt_content(content, remove_punctuation=False):
     "Cleans up VTT strings so that WER can be detected."
@@ -38,8 +36,9 @@ def clean_vtt_content(content, remove_punctuation=False):
 
 def run_on_directory():
     "Run through all VTT files in the specified directory."
-    input_path = Path(vtt_directory)
-    output_path = Path(output_directory)
+    config = get_config()["vtt_cleaning"]
+    input_path = Path(config["input_directory"])
+    output_path = Path(config["output_directory"])
 
     for filepath in input_path.glob("*.vtt"):
         orig_stem = filepath.stem

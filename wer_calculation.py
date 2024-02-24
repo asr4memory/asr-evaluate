@@ -2,7 +2,7 @@ from pathlib import Path
 import os
 import sys
 from jiwer import process_words, process_characters, visualize_alignment
-from config_asr_evaluate import reference_directory, hypothesis_directory
+from app_config import get_config
 
 def list_files(directory):
     "Function to get the base name of the files up to the first point."
@@ -16,6 +16,9 @@ def list_files(directory):
 
 def run_on_directories(print_alignment=False):
     # List files in both directories:
+    config = get_config()["wer_calculation"]
+    reference_directory = config["reference_directory"]
+    hypothesis_directory = config["hypothesis_directory"]
     reference_files = list_files(reference_directory)
     hypothesis_files = list_files(hypothesis_directory)
 

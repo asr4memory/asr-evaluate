@@ -23,7 +23,7 @@ pip install -r requirements.txt
 Create the configuration file.
 
 ```shell
-cp config_example.py config_asr_evaluate.py
+cp config.example.toml config.toml
 ```
 
 ## Usage

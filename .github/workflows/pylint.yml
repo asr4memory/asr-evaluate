@@ -21,7 +21,8 @@ jobs:
         pip install -r requirements.txt
     - name: Create configuration file
       run: |
-        cp config_example.py config_asr_evaluate.py
+        cp config.example.toml config.toml
+
     - name: Analysing the code with pylint
       run: |
         pylint --errors-only --disable=C,R $(git ls-files '*.py')
