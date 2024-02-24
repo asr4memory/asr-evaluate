@@ -8,16 +8,16 @@
 
 ## Installation
 
-Install dependencies with for usage with a CPU:
+Install Pytorch [according to your system,](https://pytorch.org/get-started/locally/) e.g. for Linux with only CPU support:
 
 ```shell
-pip install -r requirements_cpu.txt
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 ```
 
-Or install dependencies for a GPU:
+Install the rest of the dependencies:
 
 ```shell
-pip install -r requirements_gpu.txt
+pip install -r requirements.txt
 ```
 
 ## Usage
