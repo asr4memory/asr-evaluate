@@ -41,7 +41,13 @@ python evaluate_dataset.py fleurs
 Use the length option to reduce the number of data points.
 
 ```shell
-python evaluate_dataset.py cv length=100
+python evaluate_dataset.py cv --length=100
+```
+
+Login with huggingface_hub token, requires a token generated from https://huggingface.co/settings/tokens .
+
+```shell
+huggingface-cli login
 ```
 
 ### Evaluating larger files and transcripts
