@@ -26,7 +26,7 @@ def run_on_directories(print_alignment=False):
     # hypothesis files:
     for ref_base, ref_filename in reference_files.items():
         if ref_base not in hypothesis_files:
-            print(f"No corresponding hypothesis file found for: {ref_base}")
+            #print(f"No corresponding hypothesis file found for: {ref_base}")
             continue
 
         # Construct complete path to the files:
@@ -44,7 +44,7 @@ def run_on_directories(print_alignment=False):
         metrics = process_words(reference_text, hypothesis_text)
         char_output = process_characters(reference_text, hypothesis_text)
 
-        print(f"For the file pair: {ref_base}")
+        print(f"For the file pair: {ref_base} => comparing reference file '{ref_filename}' vs. hypothesis file '{hypothesis_files[ref_base]}'")
         print(f"WER: {metrics.wer}")
         print(f"MER: {metrics.mer}")
         print(f"WIL: {metrics.wil}")
