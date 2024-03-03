@@ -18,6 +18,7 @@ Install the rest of the dependencies:
 
 ```shell
 pip install -r requirements.txt
+pip install git+https://github.com/m-bain/whisperx.git --upgrade
 ```
 
 Create the configuration file.
@@ -42,6 +43,12 @@ Use the length option to reduce the number of data points.
 
 ```shell
 python evaluate_dataset.py cv --length=100
+```
+
+Use the variant option (transformers or whisperx) to choose a Whisper variant.
+
+```shell
+python evaluate_dataset.py cv --variant=whisperx
 ```
 
 Login with huggingface_hub token, requires a token generated from https://huggingface.co/settings/tokens .

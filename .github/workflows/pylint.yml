@@ -19,6 +19,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
         pip install -r requirements.txt
+        pip install git+https://github.com/m-bain/whisperx.git --upgrade
     - name: Create configuration file
       run: |
         cp config.example.toml config.toml

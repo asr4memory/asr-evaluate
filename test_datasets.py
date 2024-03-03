@@ -1,10 +1,10 @@
 from datasets import load_dataset, Audio, Dataset
 from pyarrow import Table
 
-class TestData:
+class TestDataset:
     AUDIO_KEY = "audio"
     TRANSCRIPTION_KEY = "transcription"
-    LANGUAGE = "german"
+    LANGUAGE = "de"
 
     def __init__(self, length = None):
         self.dataset = Dataset(Table())
@@ -20,7 +20,7 @@ class TestData:
         return "{0} {1}".format(info.dataset_name, info.version)
 
 
-class CommonVoiceTestData(TestData):
+class CommonVoiceTestDataset(TestDataset):
     TRANSCRIPTION_KEY = "sentence"
 
     def __init__(self, length = None):
@@ -29,11 +29,11 @@ class CommonVoiceTestData(TestData):
                                     split='test',
                                     trust_remote_code=True)
         if length: self.dataset = self.dataset.select(range(length))
-        # Does this even work?
-        self.dataset.cast_column("audio", Audio(sampling_rate=16000))
+        self.dataset = self.dataset.cast_column("audio",
+                                                Audio(sampling_rate=16000))
 
 
-class FleursTestData(TestData):
+class FleursTestDataset(TestDataset):
     def __init__(self, length = None):
         self.dataset = load_dataset('google/fleurs',
                                     'de_de',
