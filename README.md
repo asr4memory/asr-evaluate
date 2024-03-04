@@ -33,6 +33,12 @@ Right now, only Whisper can be used for evaluation.
 
 ### Evaluating datasets
 
+Login with huggingface_hub token, requires a token generated from https://huggingface.co/settings/tokens .
+
+```shell
+huggingface-cli login
+```
+
 Use evaluate_dataset.py to evaluate either the Fleurs or the CommonVoice dataset.
 
 ```shell
@@ -49,12 +55,6 @@ Use the variant option (transformers or whisperx) to choose a Whisper variant.
 
 ```shell
 python evaluate_dataset.py cv --variant=whisperx
-```
-
-Login with huggingface_hub token, requires a token generated from https://huggingface.co/settings/tokens .
-
-```shell
-huggingface-cli login
 ```
 
 ### Evaluating larger files and transcripts
