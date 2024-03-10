@@ -6,3 +6,4 @@ pylint==3.0.3
 soundfile==0.12.1
 toml==0.10.2
 transformers==4.37.1
+whisper_timestamped==1.15.1

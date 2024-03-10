@@ -3,7 +3,10 @@ import re
 import statistics
 from jiwer import process_words
 from test_datasets import CommonVoiceTestDataset, FleursTestDataset
-from whisper_variants import WhisperTransformersVariant, WhisperXVariant
+from whisper_variants import (
+    WhisperTransformersVariant,
+    WhisperXVariant,
+    WhisperTimestampedVariant)
 
 def normalize(text):
     result = text.strip().lower()
@@ -57,7 +60,7 @@ if __name__ == '__main__':
                         default=None,
                         help='the number of data points that should be used')
     parser.add_argument('--variant',
-                        choices=['transformers', 'whisperx'],
+                        choices=['transformers', 'whisperx', 'whisper_timestamped'],
                         default='transformers',
                         help='the Whisper variant to be evaluated')
 
@@ -73,7 +76,9 @@ if __name__ == '__main__':
 
     if args.variant == 'whisperx':
         variant = WhisperXVariant()
-    else:
+    elif args.variant == 'transformers':
         variant = WhisperTransformersVariant()
+    elif args.variant == 'whisper_timestamped':
+        variant = WhisperTimestampedVariant()
 
     process(dataset, variant)
