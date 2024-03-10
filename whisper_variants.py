@@ -1,5 +1,6 @@
 import torch
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
+import whisper
 import whisperx
 import whisper_timestamped
 
@@ -76,4 +77,14 @@ class WhisperTimestampedVariant(Variant):
             best_of=5,
             temperature=(0.0, 0.2, 0.4, 0.6, 0.8, 1.0))
 
+        return result["text"]
+
+
+class WhisperVariant(Variant):
+    def __init__(self):
+        self.model = whisper.load_model("large-v3", "cpu")
+
+    def transcribe(self, audio, language):
+        audio32 = audio.astype("float32")
+        result = self.model.transcribe(audio32, language=language)
         return result["text"]

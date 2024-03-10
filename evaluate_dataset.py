@@ -4,6 +4,7 @@ import statistics
 from jiwer import process_words
 from test_datasets import CommonVoiceTestDataset, FleursTestDataset
 from whisper_variants import (
+    WhisperVariant,
     WhisperTransformersVariant,
     WhisperXVariant,
     WhisperTimestampedVariant)
@@ -60,8 +61,9 @@ if __name__ == '__main__':
                         default=None,
                         help='the number of data points that should be used')
     parser.add_argument('--variant',
-                        choices=['transformers', 'whisperx', 'whisper_timestamped'],
-                        default='transformers',
+                        choices=['whisper', 'transformers', 'whisperx',
+                                 'whisper_timestamped'],
+                        default='whisper',
                         help='the Whisper variant to be evaluated')
 
     args = parser.parse_args()
@@ -74,7 +76,9 @@ if __name__ == '__main__':
     length = args.length
     dataset = dataset_class(length)
 
-    if args.variant == 'whisperx':
+    if args.variant == 'whisper':
+        variant = WhisperVariant()
+    elif args.variant == 'whisperx':
         variant = WhisperXVariant()
     elif args.variant == 'transformers':
         variant = WhisperTransformersVariant()
