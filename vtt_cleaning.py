@@ -21,6 +21,8 @@ def clean_vtt_content(content, remove_punctuation=False):
     # Remove all forms of blank lines:
     result = re.sub(r'^\s*$\n', '', result,
                     flags=re.MULTILINE)
+    # Removing all new lines
+    # result = re.sub(r'\n', ' ', result)
 
     # Additional removal of all punctuation if requested:
     if remove_punctuation:
