@@ -25,14 +25,20 @@ def run_on_directories(print_alignment=False):
     # Iterate through the reference files and check for matches in the
     # hypothesis files:
     for ref_base, ref_filename in reference_files.items():
+
         if ref_base not in hypothesis_files:
             #print(f"No corresponding hypothesis file found for: {ref_base}")
+            continue
+
+        if ref_filename == ".DS_Store":
             continue
 
         # Construct complete path to the files:
         ref_file_path = os.path.join(reference_directory, ref_filename)
         hyp_file_path = os.path.join(hypothesis_directory,
                                     hypothesis_files[ref_base])
+
+
 
         # Read texts from the files:
         with open(ref_file_path, 'r', encoding='utf-8') as ref:
