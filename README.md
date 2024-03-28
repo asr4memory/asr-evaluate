@@ -51,7 +51,7 @@ Use the length option to reduce the number of data points.
 python evaluate_dataset.py cv --length=100
 ```
 
-Use the variant option to choose a Whisper variant: (whisper, transformers, whisperx or whisper_timestamped).
+Use the variant option to choose a Whisper variant: whisper, transformers, whisperx, whisper_timestamped or whisper-mlx (only compatible with Apple Silicon chips).
 
 ```shell
 python evaluate_dataset.py cv --variant=whisperx
