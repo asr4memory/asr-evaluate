@@ -7,7 +7,8 @@ from whisper_variants import (
     WhisperVariant,
     WhisperTransformersVariant,
     WhisperXVariant,
-    WhisperTimestampedVariant)
+    WhisperTimestampedVariant,
+    WhisperMlxVariant)
 
 def normalize(text):
     result = text.strip().lower()
@@ -62,7 +63,7 @@ if __name__ == '__main__':
                         help='the number of data points that should be used')
     parser.add_argument('--variant',
                         choices=['whisper', 'transformers', 'whisperx',
-                                 'whisper_timestamped'],
+                                 'whisper_timestamped', 'whisper_mlx'],
                         default='whisper',
                         help='the Whisper variant to be evaluated')
 
@@ -84,5 +85,7 @@ if __name__ == '__main__':
         variant = WhisperTransformersVariant()
     elif args.variant == 'whisper_timestamped':
         variant = WhisperTimestampedVariant()
+    elif args.variant == 'whisper_mlx':
+        variant = WhisperMlxVariant()
 
     process(dataset, variant)

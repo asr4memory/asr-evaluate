@@ -3,6 +3,7 @@ from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
 import whisper
 import whisperx
 import whisper_timestamped
+import whisper_mlx
 
 class Variant:
     def transcribe(self, audio, language):
@@ -79,6 +80,11 @@ class WhisperTimestampedVariant(Variant):
 
         return result["text"]
 
+class WhisperMlxVariant(Variant):
+    def transcribe(self, audio, language):
+        audio32 = audio.astype("float32")
+        result = whisper_mlx.transcribe(audio32, path_or_hf_repo="mlx-community/whisper-large-v3-mlx-8bit", language=language)
+        return result["text"]
 
 class WhisperVariant(Variant):
     def __init__(self):
