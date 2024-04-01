@@ -21,6 +21,12 @@ pip install -r requirements.txt
 pip install git+https://github.com/m-bain/whisperx.git --upgrade
 ```
 
+Install mac-only dependencies if you have a Mac:
+
+```shell
+pip install -r requirements_mac.txt
+```
+
 Create the configuration file.
 
 ```shell
@@ -51,7 +57,7 @@ Use the length option to reduce the number of data points.
 python evaluate_dataset.py cv --length=100
 ```
 
-Use the variant option to choose a Whisper variant: whisper, transformers, whisperx, whisper_timestamped or whisper-mlx (only compatible with Apple Silicon chips).
+Use the variant option to choose a Whisper variant: whisper, transformers, whisperx, whisper_timestamped or whisper_mlx (only compatible with Apple Silicon chips).
 
 ```shell
 python evaluate_dataset.py cv --variant=whisperx

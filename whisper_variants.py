@@ -1,9 +1,11 @@
+import importlib
 import torch
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
 import whisper
 import whisperx
 import whisper_timestamped
-import whisper_mlx
+if importlib.util.find_spec(name="mlx"):
+    import whisper_mlx
 
 class Variant:
     def transcribe(self, audio, language):

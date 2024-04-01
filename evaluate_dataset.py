@@ -8,7 +8,8 @@ from whisper_variants import (
     WhisperTransformersVariant,
     WhisperXVariant,
     WhisperTimestampedVariant,
-    WhisperMlxVariant)
+    WhisperMlxVariant,
+)
 
 def normalize(text):
     result = text.strip().lower()
