@@ -5,12 +5,12 @@ if present.
 """
 
 CONST_DEFAULT_CONFIG = {
-    'vtt_cleaning': {
-        'input_directory': '',
-        'output_directory': '',
+    "vtt_cleaning": {
+        "input_directory": "",
+        "output_directory": "",
     },
-    'wer_calculation': {
-        'reference_directory': '',
-        'hypothesis_directory': '',
+    "wer_calculation": {
+        "reference_directory": "",
+        "hypothesis_directory": "",
     },
 }

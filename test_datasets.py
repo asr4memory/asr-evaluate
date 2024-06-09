@@ -1,12 +1,13 @@
 from datasets import load_dataset, Audio, Dataset
 from pyarrow import Table
 
+
 class TestDataset:
     AUDIO_KEY = "audio"
     TRANSCRIPTION_KEY = "transcription"
     LANGUAGE = "de"
 
-    def __init__(self, length = None):
+    def __init__(self, length=None):
         self.dataset = Dataset(Table())
 
     def __len__(self):
@@ -23,20 +24,22 @@ class TestDataset:
 class CommonVoiceTestDataset(TestDataset):
     TRANSCRIPTION_KEY = "sentence"
 
-    def __init__(self, length = None):
-        self.dataset = load_dataset('mozilla-foundation/common_voice_16_1',
-                                    'de',
-                                    split='test',
-                                    trust_remote_code=True)
-        if length: self.dataset = self.dataset.select(range(length))
-        self.dataset = self.dataset.cast_column("audio",
-                                                Audio(sampling_rate=16000))
+    def __init__(self, length=None):
+        self.dataset = load_dataset(
+            "mozilla-foundation/common_voice_16_1",
+            "de",
+            split="test",
+            trust_remote_code=True,
+        )
+        if length:
+            self.dataset = self.dataset.select(range(length))
+        self.dataset = self.dataset.cast_column("audio", Audio(sampling_rate=16000))
 
 
 class FleursTestDataset(TestDataset):
-    def __init__(self, length = None):
-        self.dataset = load_dataset('google/fleurs',
-                                    'de_de',
-                                    split='test',
-                                    trust_remote_code=True)
-        if length: self.dataset = self.dataset.select(range(length))
+    def __init__(self, length=None):
+        self.dataset = load_dataset(
+            "google/fleurs", "de_de", split="test", trust_remote_code=True
+        )
+        if length:
+            self.dataset = self.dataset.select(range(length))
