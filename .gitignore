@@ -1,4 +1,9 @@
-config.toml
-__pycache__
+# All directories
 .mypy_cache
-asr-tools_venv/
+__pycache__
+
+# Specific directories
+/.idea
+/.venv
+/asr-tools_venv
+/config.toml
