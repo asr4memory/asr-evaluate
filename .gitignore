@@ -7,3 +7,4 @@ __pycache__
 /.venv
 /asr-tools_venv
 /config.toml
+/output.json

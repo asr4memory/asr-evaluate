@@ -1,5 +1,7 @@
 import argparse
+import json
 import re
+
 from jiwer import process_words
 from test_datasets import CommonVoiceTestDataset, FleursTestDataset
 from whisper_variants import (
@@ -11,13 +13,14 @@ from whisper_variants import (
 )
 
 
-def process(dataset, variant):
+def process(dataset, variant, file):
     print(f"Variant: {variant}")
     print(f"Dataset: {dataset}")
     print(f"Evaluating {len(dataset)} data points...")
 
     actual_list = []
     target_list = []
+    output_list = []
 
     for index in range(len(dataset)):
         actual, target, metrics = evaluate(dataset, index, variant)
@@ -28,11 +31,21 @@ def process(dataset, variant):
         actual_list.append(actual)
         target_list.append(target)
         print("WER: {:2.1%}".format(metrics.wer))
+        output_list.append({
+            "actual": actual,
+            "target": target,
+            "wer": metrics.wer,
+        })
 
     combined_metrics = process_words(
         " ".join(target_list),
         " ".join(actual_list),
     )
+
+    if file:
+        json.dump(output_list, file, indent=4, ensure_ascii=False)
+        file.close()
+
     print(
         "Average WER of {0:2.1%} for {1} data points".format(
             combined_metrics.wer, len(dataset)
@@ -86,6 +99,12 @@ if __name__ == "__main__":
         default="whisper",
         help="the Whisper variant to be evaluated",
     )
+    parser.add_argument(
+        "--output",
+        "-o",
+        type=argparse.FileType("w", encoding="utf-8"),
+        help="filename for outputting results as JSON"
+    )
 
     args = parser.parse_args()
 
@@ -108,4 +127,6 @@ if __name__ == "__main__":
     elif args.variant == "whisper_mlx":
         variant = WhisperMlxVariant()
 
-    process(dataset, variant)
+    output_file = args.output
+
+    process(dataset, variant, output_file)
