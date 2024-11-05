@@ -45,7 +45,7 @@ Login with huggingface_hub token, requires a token generated from https://huggin
 huggingface-cli login
 ```
 
-Use evaluate_dataset.py to evaluate either the Fleurs or the CommonVoice dataset.
+Use evaluate_dataset.py to evaluate either the Fleurs, the CommonVoice or a locally saved custom dataset.
 
 ```shell
 python evaluate_dataset.py fleurs

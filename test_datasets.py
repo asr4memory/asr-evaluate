@@ -1,6 +1,6 @@
-from datasets import load_dataset, Audio, Dataset
+from datasets import load_dataset, Audio, Dataset, DatasetDict
 from pyarrow import Table
-
+from app_config import get_config
 
 class TestDataset:
     AUDIO_KEY = "audio"
@@ -41,5 +41,16 @@ class FleursTestDataset(TestDataset):
         self.dataset = load_dataset(
             "google/fleurs", "de_de", split="test", trust_remote_code=True
         )
+        if length:
+            self.dataset = self.dataset.select(range(length))
+
+class CustomTestDataset(TestDataset):
+    def __init__(self, length=None):
+        config = get_config()["custom_dataset"]
+        data_dir = config["dataset_directory"]
+        self.dataset = load_dataset("audiofolder", data_dir=data_dir)
+        self.dataset = self.dataset['train'].train_test_split(test_size=0.2, seed=42)
+        self.dataset = self.dataset['test']
+
         if length:
             self.dataset = self.dataset.select(range(length))

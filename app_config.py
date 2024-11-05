@@ -19,8 +19,8 @@ def initialize_config():
         data = toml.load(f)
         combined_config = {
             "vtt_cleaning": CONST_DEFAULT_CONFIG["vtt_cleaning"] | data["vtt_cleaning"],
-            "wer_calculation": CONST_DEFAULT_CONFIG["wer_calculation"]
-            | data["wer_calculation"],
+            "wer_calculation": CONST_DEFAULT_CONFIG["wer_calculation"] | data["wer_calculation"],
+            "custom_dataset": CONST_DEFAULT_CONFIG["custom_dataset"] | data["custom_dataset"],
         }
 
 

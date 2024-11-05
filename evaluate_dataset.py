@@ -3,7 +3,7 @@ import json
 import re
 
 from jiwer import process_words
-from test_datasets import CommonVoiceTestDataset, FleursTestDataset
+from test_datasets import CommonVoiceTestDataset, FleursTestDataset, CustomTestDataset
 from whisper_variants import (
     WhisperVariant,
     WhisperTransformersVariant,
@@ -23,23 +23,43 @@ def process(dataset, variant, file):
     output_list = []
 
     for index in range(len(dataset)):
-        actual, target, metrics = evaluate(dataset, index, variant)
+        try:
+            # Attempt to evaluate the data point
+            actual, target, metrics = evaluate(dataset, index, variant)
 
-        print("{0} / {1} {2}".format(index + 1, len(dataset), "-" * 70))
-        print(actual)
-        print(target)
-        actual_list.append(actual)
-        target_list.append(target)
-        print("WER: {:2.1%}".format(metrics.wer))
-        output_list.append({
-            "actual": actual,
-            "target": target,
-            "wer": metrics.wer,
-        })
+            print("{0} / {1} {2}".format(index + 1, len(dataset), "-" * 70))
+            print(actual)
+            print(target)
+            actual_list.append(actual)
+            target_list.append(target)
+            print("WER: {:2.1%}".format(metrics.wer))
+            output_list.append({
+                "actual": actual,
+                "target": target,
+                "wer": metrics.wer,
+            })
+
+        except Exception as e:
+            # Catch and print error details, including the index of the problematic file
+            print(f"[Error] Failed to process data point at index {index}: {e}")
+            # Optionally, log additional data point information
+            data_point = dataset[index]
+            print(f"  Data point info: {data_point}")
+            continue  # Skip to the next data point
 
     combined_metrics = process_words(
         " ".join(target_list),
         " ".join(actual_list),
+    )
+
+    if file:
+        json.dump(output_list, file, indent=4, ensure_ascii=False)
+        file.close()
+
+    print(
+        "Average WER of {0:2.1%} for {1} data points".format(
+            combined_metrics.wer, len(dataset)
+        )
     )
 
     if file:
@@ -75,7 +95,7 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "dataset",
-        choices=["cv", "fleurs"],
+        choices=["cv", "fleurs", "custom"],
         help="the name of the dataset the tool is evaluated on",
     )
     parser.add_argument(
@@ -112,6 +132,8 @@ if __name__ == "__main__":
         dataset_class = CommonVoiceTestDataset
     elif args.dataset == "fleurs":
         dataset_class = FleursTestDataset
+    elif args.dataset == "custom":
+        dataset_class = CustomTestDataset
 
     length = args.length
     dataset = dataset_class(length)
