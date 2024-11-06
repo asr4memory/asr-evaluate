@@ -13,7 +13,9 @@ CONST_DEFAULT_CONFIG = {
         "reference_directory": "",
         "hypothesis_directory": "",
     },
-    "custom_dataset": {
+    "custom_dataset_config": {
         "dataset_directory": "",
+        "test_size": 0.2,
+        "seed": 42,
     },
 }
