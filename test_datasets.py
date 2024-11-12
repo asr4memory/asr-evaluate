@@ -2,6 +2,7 @@ from datasets import load_dataset, Audio, Dataset, DatasetDict
 from pyarrow import Table
 from app_config import get_config
 
+
 class TestDataset:
     AUDIO_KEY = "audio"
     TRANSCRIPTION_KEY = "transcription"
@@ -44,6 +45,7 @@ class FleursTestDataset(TestDataset):
         if length:
             self.dataset = self.dataset.select(range(length))
 
+
 class CustomTestDataset(TestDataset):
     def __init__(self, length=None):
         config = get_config()["custom_dataset_config"]
@@ -51,8 +53,10 @@ class CustomTestDataset(TestDataset):
         test_size = config["test_size"]
         seed = config["seed"]
         self.dataset = load_dataset("audiofolder", data_dir=data_dir)
-        self.dataset = self.dataset['train'].train_test_split(test_size=test_size, seed=seed)
-        self.dataset = self.dataset['test']
+        self.dataset = self.dataset["train"].train_test_split(
+            test_size=test_size, seed=seed
+        )
+        self.dataset = self.dataset["test"]
 
         if length:
             self.dataset = self.dataset.select(range(length))

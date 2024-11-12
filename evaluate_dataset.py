@@ -33,11 +33,13 @@ def process(dataset, variant, file):
             actual_list.append(actual)
             target_list.append(target)
             print("WER: {:2.1%}".format(metrics.wer))
-            output_list.append({
-                "actual": actual,
-                "target": target,
-                "wer": metrics.wer,
-            })
+            output_list.append(
+                {
+                    "actual": actual,
+                    "target": target,
+                    "wer": metrics.wer,
+                }
+            )
 
         except Exception as e:
             # Catch and print error details, including the index of the problematic file
@@ -123,7 +125,7 @@ if __name__ == "__main__":
         "--output",
         "-o",
         type=argparse.FileType("w", encoding="utf-8"),
-        help="filename for outputting results as JSON"
+        help="filename for outputting results as JSON",
     )
 
     args = parser.parse_args()
