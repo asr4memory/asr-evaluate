@@ -109,6 +109,20 @@ if __name__ == "__main__":
         help="the number of data points that should be used",
     )
     parser.add_argument(
+        "--seed",
+        "-s",
+        type=int,
+        default=42,
+        help="the seed for the random number generator",
+    )
+    parser.add_argument(
+        "--test_size",
+        "-t",
+        type=float,
+        default=0.2,
+        help="the fraction of the dataset that should be used for testing",
+    )
+    parser.add_argument(
         "--variant",
         "-v",
         choices=[
@@ -131,14 +145,11 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.dataset == "cv":
-        dataset_class = CommonVoiceTestDataset
+        dataset_class = CommonVoiceTestDataset(args.length)
     elif args.dataset == "fleurs":
-        dataset_class = FleursTestDataset
+        dataset_class = FleursTestDataset(args.length)
     elif args.dataset == "custom":
-        dataset_class = CustomTestDataset
-
-    length = args.length
-    dataset = dataset_class(length)
+        dataset_class = CustomTestDataset(args.length, args.test_size, args.seed)
 
     if args.variant == "whisper":
         variant = WhisperVariant()
@@ -153,4 +164,4 @@ if __name__ == "__main__":
 
     output_file = args.output
 
-    process(dataset, variant, output_file)
+    process(dataset_class, variant, output_file)

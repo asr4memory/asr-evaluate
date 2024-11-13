@@ -47,11 +47,9 @@ class FleursTestDataset(TestDataset):
 
 
 class CustomTestDataset(TestDataset):
-    def __init__(self, length=None):
+    def __init__(self, length=None, test_size=0.2, seed=42):
         config = get_config()["custom_dataset_config"]
         data_dir = config["dataset_directory"]
-        test_size = config["test_size"]
-        seed = config["seed"]
         self.dataset = load_dataset("audiofolder", data_dir=data_dir)
         self.dataset = self.dataset["train"].train_test_split(
             test_size=test_size, seed=seed

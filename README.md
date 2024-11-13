@@ -57,10 +57,22 @@ Use the length option to reduce the number of data points.
 python evaluate_dataset.py cv --length=100
 ```
 
-Use the variant option to choose a Whisper variant: whisper, transformers, whisperx, whisper_timestamped or whisper_mlx (only compatible with Apple Silicon chips).
+Use the variant option to choose a Whisper variant: whisper (default), transformers, whisperx, whisper_timestamped or whisper_mlx (only compatible with Apple Silicon chips).
 
 ```shell
 python evaluate_dataset.py cv --variant=whisperx
+```
+
+Use the test_size option to split the dataset (default: test_size=0.2).
+
+```shell
+python evaluate_dataset.py cv --test_size=0.4
+```
+
+Use the seed option to randomize the test split (default: seed=42)
+
+```shell
+python evaluate_dataset.py cv --seed=84
 ```
 
 ### Evaluating larger files and transcripts

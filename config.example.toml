@@ -8,5 +8,3 @@ hypothesis_directory = "/Users/ahenderson/Documents/Whisper_Test_Files/hypothesi
 
 [custom_dataset_test]
 dataset_directory = "/Users/ahenderson/Documents/Whisper_Test_Files/hypothesis/dataset"
-test_size = 0.2
-seed = 42
