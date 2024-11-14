@@ -63,16 +63,16 @@ Use the variant option to choose a Whisper variant: whisper (default), transform
 python evaluate_dataset.py cv --variant=whisperx
 ```
 
-Use the test_size option to split the dataset (default: test_size=0.2).
+Use the test_size option to split the dataset (default: test_size=0.2). Works only on custom dataset.
 
 ```shell
-python evaluate_dataset.py cv --test_size=0.4
+python evaluate_dataset.py custom --test_size=0.4
 ```
 
-Use the seed option to randomize the test split (default: seed=42)
+Use the seed option to randomize the test split (default: seed=42). Works only on custom dataset.
 
 ```shell
-python evaluate_dataset.py cv --seed=84
+python evaluate_dataset.py custom --seed=84
 ```
 
 ### Evaluating larger files and transcripts
