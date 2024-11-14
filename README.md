@@ -39,7 +39,7 @@ Right now, only Whisper can be used for evaluation.
 
 ### Evaluating datasets
 
-Login with huggingface_hub token, requires a token generated from https://huggingface.co/settings/tokens .
+Login with huggingface_hub token, requires a token generated from https://huggingface.co/settings/tokens (not required for custom dataset use).
 
 ```shell
 huggingface-cli login
