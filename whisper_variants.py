@@ -101,7 +101,7 @@ class WhisperMlxVariant(Variant):
         audio32 = audio.astype("float32")
         result = whisper_mlx.transcribe(
             audio32,
-            path_or_hf_repo="mlx-community/whisper-large-v3-mlx-8bit",
+            path_or_hf_repo="mlx-community/whisper-large-v3-mlx",
             language=language,
         )
         return result["text"]
