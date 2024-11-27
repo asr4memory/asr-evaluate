@@ -23,7 +23,7 @@ class WhisperTransformersVariant(Variant):
         device = "cuda:0" if torch.cuda.is_available() else "cpu"
         torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
 
-        model_id = "openai/whisper-large-v3"
+        model_id = "openai/whisper-tiny"
 
         model = AutoModelForSpeechSeq2Seq.from_pretrained(
             model_id,
@@ -56,7 +56,7 @@ class WhisperTransformersVariant(Variant):
 
 class WhisperXVariant(Variant):
     def __init__(self):
-        self.model = whisperx.load_model("large-v3", "cpu", compute_type="float32")
+        self.model = whisperx.load_model("small", "cpu", compute_type="float32")
 
     def transcribe(self, audio, language):
         audio32 = audio.astype("float32")
@@ -109,7 +109,7 @@ class WhisperMlxVariant(Variant):
 
 class WhisperVariant(Variant):
     def __init__(self):
-        self.model = whisper.load_model("large-v3", "cpu")
+        self.model = whisper.load_model("tiny", "cpu")
 
     def transcribe(self, audio, language):
         audio32 = audio.astype("float32")

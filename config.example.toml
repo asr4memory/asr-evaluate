@@ -6,5 +6,5 @@ output_directory = "/Users/ahenderson/Documents/Whisper_Test_Files/_output/"
 reference_directory = "/Users/ahenderson/Documents/Whisper_Test_Files/reference/"
 hypothesis_directory = "/Users/ahenderson/Documents/Whisper_Test_Files/hypothesis/"
 
-[custom_dataset_test]
+[custom_dataset_config]
 dataset_directory = "/Users/ahenderson/Documents/Whisper_Test_Files/hypothesis/dataset"
