@@ -10,6 +10,7 @@ from whisper_variants import (
     WhisperXVariant,
     WhisperTimestampedVariant,
     WhisperMlxVariant,
+    CrisperWhisperVariant
 )
 
 
@@ -131,6 +132,7 @@ if __name__ == "__main__":
             "whisperx",
             "whisper_timestamped",
             "whisper_mlx",
+            "crisper_whisper"
         ],
         default="whisper",
         help="the Whisper variant to be evaluated",
@@ -161,6 +163,8 @@ if __name__ == "__main__":
         variant = WhisperTimestampedVariant()
     elif args.variant == "whisper_mlx":
         variant = WhisperMlxVariant()
+    elif args.variant == "crisper_whisper":
+        variant = CrisperWhisperVariant()
 
     output_file = args.output
 
