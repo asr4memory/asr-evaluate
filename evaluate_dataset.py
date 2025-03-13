@@ -87,7 +87,7 @@ def evaluate(dataset, index, variant):
 
 def normalize(text):
     result = text.strip().lower()
-    result = re.sub(r"[!\?\.,;]", "", result)
+    result = re.sub(r"[!\?\.,;:]", "", result)
     return result
 
 

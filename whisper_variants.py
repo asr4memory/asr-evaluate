@@ -5,6 +5,7 @@ import whisper
 import whisperx
 import whisper_timestamped
 from CrisperWhisper.utils import adjust_pauses_for_hf_pipeline_output
+from speechbrain.inference import EncoderDecoderASR
 
 mlx_present = bool(importlib.util.find_spec(name="mlx"))
 if mlx_present:
@@ -88,11 +89,11 @@ class CrisperWhisperVariant(Variant):
 
 class WhisperXVariant(Variant):
     def __init__(self):
-        self.model = whisperx.load_model("large-v3", "cpu", compute_type="float32")
+        self.model = whisperx.load_model("large-v3", "cuda", compute_type="float32")
 
     def transcribe(self, audio, language):
         audio32 = audio.astype("float32")
-        result = self.model.transcribe(audio32, batch_size=2, language=language)
+        result = self.model.transcribe(audio32, batch_size=7, language=language)
         segments = result["segments"]
         text_parts = [segment["text"] for segment in segments]
         full_text = "".join(text_parts)
@@ -101,7 +102,7 @@ class WhisperXVariant(Variant):
 
 class WhisperTimestampedVariant(Variant):
     def __init__(self):
-        self.model = whisper_timestamped.load_model("large-v3", "cpu")
+        self.model = whisper_timestamped.load_model("large-v3", "cuda")
 
     def transcribe(self, audio, language):
         audio32 = audio.astype("float32")
@@ -141,9 +142,17 @@ class WhisperMlxVariant(Variant):
 
 class WhisperVariant(Variant):
     def __init__(self):
-        self.model = whisper.load_model("large-v3", "cpu")
+        self.model = whisper.load_model("large-v3", "cuda")
 
     def transcribe(self, audio, language):
         audio32 = audio.astype("float32")
         result = self.model.transcribe(audio32, language=language)
         return result["text"]
+
+class SpeechbrainVariant(Variant):
+    def __init__(self):
+        self.model = EncoderDecoderASR.from_hparams(source="speechbrain/asr-conformer-transformerlm-librispeech", savedir="/home/kompiel/.cache/speechbrain/asr-transformer-transformerlm-librispeech")
+
+    def transcribe(self, audio, language):
+        result = self.model.transcribe_file(audio)
+        return result
