@@ -10,7 +10,8 @@ from whisper_variants import (
     WhisperXVariant,
     WhisperTimestampedVariant,
     WhisperMlxVariant,
-    CrisperWhisperVariant
+    CrisperWhisperVariant,
+    Wav2Vec
 )
 
 
@@ -132,7 +133,8 @@ if __name__ == "__main__":
             "whisperx",
             "whisper_timestamped",
             "whisper_mlx",
-            "crisper_whisper"
+            "crisper_whisper",
+            "wav2vec"
         ],
         default="whisper",
         help="the Whisper variant to be evaluated",
@@ -165,6 +167,8 @@ if __name__ == "__main__":
         variant = WhisperMlxVariant()
     elif args.variant == "crisper_whisper":
         variant = CrisperWhisperVariant()
+    elif args.variant == "wav2vec":
+        variant = Wav2Vec()
 
     output_file = args.output
 

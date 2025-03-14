@@ -1,11 +1,11 @@
 import importlib
 import torch
-from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
+from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline, Wav2Vec2ForCTC, Wav2Vec2Processor
 import whisper
 import whisperx
 import whisper_timestamped
 from CrisperWhisper.utils import adjust_pauses_for_hf_pipeline_output
-from speechbrain.inference import EncoderDecoderASR
+import numpy as np
 
 mlx_present = bool(importlib.util.find_spec(name="mlx"))
 if mlx_present:
@@ -89,11 +89,11 @@ class CrisperWhisperVariant(Variant):
 
 class WhisperXVariant(Variant):
     def __init__(self):
-        self.model = whisperx.load_model("large-v3", "cuda", compute_type="float32")
+        self.model = whisperx.load_model("large-v3", "cpu", compute_type="float32")
 
     def transcribe(self, audio, language):
         audio32 = audio.astype("float32")
-        result = self.model.transcribe(audio32, batch_size=7, language=language)
+        result = self.model.transcribe(audio32, batch_size=28, language=language)
         segments = result["segments"]
         text_parts = [segment["text"] for segment in segments]
         full_text = "".join(text_parts)
@@ -102,7 +102,7 @@ class WhisperXVariant(Variant):
 
 class WhisperTimestampedVariant(Variant):
     def __init__(self):
-        self.model = whisper_timestamped.load_model("large-v3", "cuda")
+        self.model = whisper_timestamped.load_model("large-v3", "cpu")
 
     def transcribe(self, audio, language):
         audio32 = audio.astype("float32")
@@ -142,17 +142,34 @@ class WhisperMlxVariant(Variant):
 
 class WhisperVariant(Variant):
     def __init__(self):
-        self.model = whisper.load_model("large-v3", "cuda")
+        self.model = whisper.load_model("large-v3", "cpu")
 
     def transcribe(self, audio, language):
         audio32 = audio.astype("float32")
         result = self.model.transcribe(audio32, language=language)
         return result["text"]
 
-class SpeechbrainVariant(Variant):
+class Wav2Vec(Variant):
     def __init__(self):
-        self.model = EncoderDecoderASR.from_hparams(source="speechbrain/asr-conformer-transformerlm-librispeech", savedir="/home/kompiel/.cache/speechbrain/asr-transformer-transformerlm-librispeech")
+        self.model = Wav2Vec2ForCTC.from_pretrained("facebook/wav2vec2-large-xlsr-53-german")
+        self.processor = Wav2Vec2Processor.from_pretrained("facebook/wav2vec2-large-xlsr-53-german")
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.model.to(self.device)
 
     def transcribe(self, audio, language):
-        result = self.model.transcribe_file(audio)
+        speech_array = audio
+        
+        if speech_array.dtype != np.float32:
+            speech_array = speech_array.astype(np.float32)
+        
+        input_values = self.processor(speech_array, sampling_rate=16000, return_tensors="pt").input_values
+        input_values = input_values.to(self.device)
+        
+        with torch.no_grad():
+            logits = self.model(input_values).logits
+        
+        predicted_ids = torch.argmax(logits, dim=-1)
+        result = self.processor.batch_decode(predicted_ids)[0]
+        
         return result
+                
