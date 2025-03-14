@@ -10,3 +10,4 @@ CrisperWhisper
 /asr-tools_venv
 /config.toml
 /output.json
+/batch_evaluate.sh
