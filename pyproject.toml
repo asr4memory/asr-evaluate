@@ -1,0 +1,19 @@
+[project]
+name = "asr-evaluate"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.12"
+dependencies = [
+    "accelerate==0.27.2",
+    "black==24.4.2",
+    "datasets==2.17.1",
+    "jiwer==3.0.3",
+    "librosa==0.10.1",
+    "openai-whisper==20250625",
+    "pylint==3.0.3",
+    "soundfile==0.12.1",
+    "toml==0.10.2",
+    "transformers==4.48.0",
+    "whisper-timestamped==1.15.6",
+    "whisperx==3.7.4",
+]

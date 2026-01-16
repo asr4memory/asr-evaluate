@@ -11,3 +11,6 @@ CrisperWhisper
 /config.toml
 /output.json
 /batch_evaluate_copy.sh
+/help
+
+.env

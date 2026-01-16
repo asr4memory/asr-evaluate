@@ -4,27 +4,18 @@
 
 ## Requirements
 
-- Python = 3.10
+- Python >= 3.12
 
-## Installation
-
-Install Pytorch [according to your system,](https://pytorch.org/get-started/locally/) e.g. for Linux with only CPU support:
+## Installation (UV package manager recommended)
 
 ```shell
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
-```
-
-Install the rest of the dependencies:
-
-```shell
-pip install -r requirements.txt
-pip install git+https://github.com/m-bain/whisperx.git --upgrade
+uv sync
 ```
 
 Install mac-only dependencies if you have a Mac:
 
 ```shell
-pip install -r requirements_mac.txt
+uv pip install -r requirements_mac.txt
 ```
 
 Create the configuration file.
