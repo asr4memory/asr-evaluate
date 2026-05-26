@@ -30,4 +30,4 @@ jobs:
         cp config.example.toml config.toml
     - name: Analysing the code with ruff
       run: |
-        ruff check $(git ls-files -- '*.py' ':!:whisper_mlx/*.py')
+        uvx ruff check $(git ls-files -- '*.py' ':!:whisper_mlx/*.py')
