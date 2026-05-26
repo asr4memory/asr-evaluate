@@ -89,7 +89,7 @@ class CrisperWhisperVariant(Variant):
 
 class WhisperXVariant(Variant):
     def __init__(self):
-        self.model = whisperx.load_model("large-v3", "cpu", compute_type="float32")
+        self.model = whisperx.load_model("large-v3", "cpu", compute_type="float16")
 
     def transcribe(self, audio, language):
         audio32 = audio.astype("float32")
@@ -105,7 +105,7 @@ class WhisperTimestampedVariant(Variant):
         self.model = whisper_timestamped.load_model("large-v3", "cpu")
 
     def transcribe(self, audio, language):
-        audio32 = audio.astype("float32")
+        audio32 = audio.astype("float16")
         result = whisper_timestamped.transcribe(
             self.model,
             audio32,
@@ -131,7 +131,7 @@ class WhisperMlxVariant(Variant):
             )
 
     def transcribe(self, audio, language):
-        audio32 = audio.astype("float32")
+        audio32 = audio.astype("float16")
         result = whisper_mlx.transcribe(
             audio32,
             path_or_hf_repo="mlx-community/whisper-large-v3-mlx",
