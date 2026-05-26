@@ -27,7 +27,7 @@ class CommonVoiceTestDataset(TestDataset):
 
     def __init__(self, length=None):
         self.dataset = load_dataset(
-            "mozilla-foundation/common_voice_16_1",
+            "fsicoli/common_voice_15_0",
             "de",
             split="test",
             trust_remote_code=True,

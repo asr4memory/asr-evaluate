@@ -2,6 +2,7 @@
 .mypy_cache
 __pycache__
 data
+logs
 CrisperWhisper
 
 # Specific directories
@@ -12,5 +13,6 @@ CrisperWhisper
 /output.json
 /batch_evaluate_copy.sh
 /help
+/bash
 
 .env
