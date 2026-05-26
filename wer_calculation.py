@@ -1,4 +1,3 @@
-from pathlib import Path
 import os
 import sys
 from jiwer import process_words, process_characters, visualize_alignment
