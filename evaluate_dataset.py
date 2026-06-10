@@ -66,16 +66,6 @@ def process(dataset, variant, file):
         )
     )
 
-    if file:
-        json.dump(output_list, file, indent=4, ensure_ascii=False)
-        file.close()
-
-    print(
-        "Average WER of {0:2.1%} for {1} data points".format(
-            combined_metrics.wer, len(dataset)
-        )
-    )
-
 
 def evaluate(dataset, index, variant):
     data_point = dataset[index]
